@@ -1,0 +1,39 @@
+.task-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 2rem;
+}
+
+.task-title {
+  font-size: 1.4rem;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.task-area {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f5f8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.placeholder {
+  font-size: 1.2rem;
+  color: #999;
+  text-align: center;
+}
+
+.cancel-button {
+  margin-top: auto;
+  font-size: 1rem;
+}
