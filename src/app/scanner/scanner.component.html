@@ -1,19 +1,23 @@
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Camera</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>QR Code Scanner</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  @if (imagePath) {
-    <ion-img [src]="imagePath" style="margin: 20px auto; max-width: 90%;"></ion-img>
-  } @else {
-    <ion-button expand="block" (click)="scanQRCode()">QR-Code scannen</ion-button>
-  }
+<ion-content class="ion-padding">
+  <ion-button expand="full" (click)="scanQRCode()" [disabled]="!hasCamera">
+    Scan QR Code
+  </ion-button>
 
   @if (resultText) {
     <ion-text>
-      <p style="padding: 16px"><strong>Erkannt:</strong> {{ resultText }}</p>
+      <p>Result: {{ resultText }}</p>
+    </ion-text>
+  }
+
+  @if (!hasCamera && platform.is('hybrid')) {
+    <ion-text>
+      <p>Camera is not available or permissions denied. Please enable camera access in your device settings.</p>
     </ion-text>
   }
 </ion-content>

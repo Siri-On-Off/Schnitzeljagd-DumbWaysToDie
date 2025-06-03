@@ -1,6 +1,14 @@
-import {Component} from '@angular/core';
-import {Camera, CameraResultType} from "@capacitor/camera";
-import {IonButton, IonContent, IonHeader, IonImg, IonText, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import { Component, OnInit } from '@angular/core';
+import { Camera } from "@capacitor/camera";
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  Platform
+} from "@ionic/angular/standalone";
 import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
 
 @Component({
@@ -14,29 +22,81 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
     IonToolbar,
     IonTitle,
     IonButton,
-    IonText,
-    IonImg
+    IonText
   ]
 })
-export class ScannerComponent {
-  imagePath?: string;
-  resultText: string = '';
+export class ScannerComponent implements OnInit {
+  resultText: string | undefined;
+  hasCamera: boolean = false;
 
-  async takePicture() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.Uri
-    })
-    this.imagePath = image.webPath
+  constructor(public platform: Platform) {
+  }
+
+  async ngOnInit() {
+    await this.checkCameraAvailability();
+  }
+
+  async checkCameraAvailability() {
+    // This checks if running on a real device (iOS or Android)
+    if (this.platform.is('hybrid')) {
+      try {
+        const permissionStatus = await Camera.checkPermissions();
+        if (permissionStatus.camera === 'granted') {
+          this.hasCamera = true;
+        } else {
+          const requestResult = await Camera.requestPermissions();
+          if (requestResult.camera === 'granted') {
+            this.hasCamera = true;
+          } else {
+            this.hasCamera = false;
+            console.warn('Camera permission denied.');
+          }
+        }
+      } catch (e) {
+        console.error('Error checking camera permissions:', e);
+        this.hasCamera = false;
+        this.resultText = 'Zugriff auf die Kamera verweigert oder nicht verfügbar.';
+      }
+    } else {
+      this.hasCamera = false;
+      this.resultText = 'QR-Scan ist im Browser nicht direkt verfügbar.';
+    }
   }
 
   async scanQRCode() {
-    const result = await BarcodeScanner.scan();
-    if (result.barcodes.length > 0) {
-      this.resultText = result.barcodes[0].rawValue ?? 'Kein Text gefunden';
-    } else {
-      this.resultText = 'Kein QR-Code erkannt.';
+    if (this.hasCamera) {
+      console.log('Attempting to scan QR code...');
+      try {
+        const barcodePermissionStatus = await BarcodeScanner.checkPermissions();
+        if (barcodePermissionStatus.camera !== 'granted') {
+          const requestResult = await BarcodeScanner.requestPermissions();
+          if (requestResult.camera !== 'granted') {
+            this.resultText = 'Kamera-Berechtigung für den QR-Code-Scanner verweigert.';
+            console.warn(this.resultText);
+            return;
+          }
+        }
+
+        // Start the barcode scanner
+        const {barcodes} = await BarcodeScanner.scan();
+
+        if (barcodes.length > 0) {
+          this.resultText = barcodes[0].rawValue;
+          console.log('Scanned QR code:', this.resultText);
+        } else {
+          this.resultText = 'Kein QR-Code erkannt.';
+          console.log('No QR code detected.');
+        }
+      }
+      catch (err: any) {
+        if (err.message && err.message.includes('User cancelled')) { // Common error for scanner dismissed
+          this.resultText = 'QR-Code-Scan abgebrochen.';
+        } else if (err.message && err.message.includes('No camera available')) { // Specific camera issue
+          this.resultText = 'Keine Kamera für den Scan verfügbar.';
+        } else {
+          this.resultText = 'Fehler beim Scannen des QR-Codes. Bitte versuchen Sie es erneut.';
+        }
+      }
     }
   }
 }
