@@ -29,6 +29,8 @@ export class ScannerComponent implements OnInit {
   resultText: string | undefined;
   hasCamera: boolean = false;
 
+  private expectedQrCodeValue: string = 'M335@ICT-BZ';
+
   constructor(public platform: Platform) {
   }
 
@@ -81,8 +83,16 @@ export class ScannerComponent implements OnInit {
         const {barcodes} = await BarcodeScanner.scan();
 
         if (barcodes.length > 0) {
-          this.resultText = barcodes[0].rawValue;
+          const scannedValue = barcodes[0].rawValue;
           console.log('Scanned QR code:', this.resultText);
+
+          if (scannedValue === this.expectedQrCodeValue) {
+            this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
+            console.log('Task solved: QR code matches!');
+          } else {
+            this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
+            console.log('QR code does not match the expected value.');
+          }
         } else {
           this.resultText = 'Kein QR-Code erkannt.';
           console.log('No QR code detected.');
