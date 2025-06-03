@@ -1,0 +1,13 @@
+<ng-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Camera</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if(imagePath){
+    <img [src]="imagePath" />
+  } @else {
+    <ion-button (click)="takePicture()">Open Camera</ion-button>
+  }
+</ng-content>
