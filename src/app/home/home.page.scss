@@ -1,6 +1,23 @@
-ion-content {
+.content-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   height: 100%;
+  text-align: center;
+  padding-top: env(safe-area-inset-top); // iOS safe area
+}
+
+.title {
+  margin-bottom: 2rem;
+}
+
+.title h1 {
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+.title p {
+  font-size: 1.2rem;
+  color: #666;
 }

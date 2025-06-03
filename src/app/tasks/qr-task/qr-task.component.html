@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aufgabe 1: QR-Code</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="skipTask()">
+        <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="task-wrapper">
+    <h2 class="task-title">Finde und scanne den QR-Code<br />an Station 1</h2>
+
+    <app-scanner />
+
+    <ion-button expand="block" color="medium" (click)="cancelGame()" class="cancel-button">
+      ❌ Abbrechen
+    </ion-button>
+  </div>
+</ion-content>

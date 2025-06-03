@@ -1,17 +1,25 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicModule } from '@ionic/angular';
 import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
-import {ScannerComponent} from "../scanner/scanner.component";
+import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [IonicModule, ScannerComponent],
+  standalone: true,
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton
+  ],
 })
 export class HomePage {
+  playerName: string = '';
+
   constructor(
     private alertCtrl: AlertController,
     private gameService: GameService,
@@ -19,11 +27,7 @@ export class HomePage {
     private router: Router
   ) {}
 
-  async ionViewDidEnter() {
-    await this.askPlayerName();
-  }
-
-  async askPlayerName() {
+  async startGame() {
     const alert = await this.alertCtrl.create({
       header: 'Willkommen!',
       message: 'Wie heisst du?',
@@ -41,9 +45,10 @@ export class HomePage {
             const name = data.playerName?.trim();
             if (!name) {
               this.showError('Bitte gib einen Namen ein.');
-              return false; // Popup bleibt offen
+              return false;
             }
-            return true; // Popup schließt sich
+            this.playerName = name;
+            return true;
           },
         },
       ],
@@ -51,32 +56,24 @@ export class HomePage {
     });
 
     await alert.present();
+    const result = await alert.onDidDismiss();
 
-    const { data } = await alert.onDidDismiss();
-    const name = data?.values?.playerName?.trim();
-
-    if (!name) {
-      // Sicherheit, falls leer
-      return;
-    }
+    if (!this.playerName) return;
 
     const camGranted = await this.permissionService.checkCameraPermission();
     if (!camGranted) {
       await this.showError('Kamera-Zugriff verweigert.');
-      await this.askPlayerName(); // Popup wieder öffnen
       return;
     }
 
     const locGranted = await this.permissionService.checkLocationPermission();
     if (!locGranted) {
       await this.showError('Standort-Zugriff verweigert.');
-      await this.askPlayerName(); // Popup wieder öffnen
       return;
     }
 
-    this.gameService.setPlayer(name);
-    await this.showSuccess(`Viel Glück, ${name}!`);
-    await this.router.navigateByUrl('/tasks');
+    this.gameService.setPlayer(this.playerName);
+    await this.router.navigateByUrl('/tasks/qr');
   }
 
   private async showError(msg: string) {
@@ -84,15 +81,6 @@ export class HomePage {
       header: 'Fehler',
       message: msg,
       buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  private async showSuccess(msg: string) {
-    const alert = await this.alertCtrl.create({
-      header: 'Schnitzeljagd gestartet',
-      message: msg,
-      buttons: ['Los geht’s!'],
     });
     await alert.present();
   }
