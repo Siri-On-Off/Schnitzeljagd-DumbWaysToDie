@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Camera, CameraResultType} from "@capacitor/camera";
-import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import {IonButton, IonContent, IonHeader, IonImg, IonText, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
 
 @Component({
@@ -13,15 +13,14 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonButton
+    IonButton,
+    IonText,
+    IonImg
   ]
 })
 export class ScannerComponent {
-  constructor() { }
-
   imagePath?: string;
   resultText: string = '';
-
 
   async takePicture() {
     const image = await Camera.getPhoto({

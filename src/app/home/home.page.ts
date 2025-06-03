@@ -3,7 +3,7 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
-import {ScannerComponent} from "../scanner/scanner/scanner.component";
+import {ScannerComponent} from "../scanner/scanner.component";
 
 @Component({
   selector: 'app-home',
