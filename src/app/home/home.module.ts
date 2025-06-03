@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import {ScannerComponent} from "../scanner/scanner.component";
+import {ScannerComponent} from "../scanner/scanner/scanner.component";
 
 
 @NgModule({
