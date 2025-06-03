@@ -16,7 +16,8 @@ import {ScannerComponent} from "../../scanner/scanner.component";
     IonHeader,
     IonContent,
     ScannerComponent
-  ]
+  ],
+  standalone: true
 })
 export class QrTaskComponent {
   constructor(private router: Router) {}
