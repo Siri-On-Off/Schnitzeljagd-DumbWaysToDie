@@ -1,0 +1,7 @@
+{
+  "name": "Schnitzeljagd-DumbWaysToDie",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
