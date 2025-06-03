@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import {ScannerComponent} from "../scanner/scanner/scanner.component";
+import {ScannerComponent} from "../scanner/scanner.component";
 
 
 @NgModule({
@@ -16,6 +15,5 @@ import {ScannerComponent} from "../scanner/scanner/scanner.component";
         HomePageRoutingModule,
         ScannerComponent
     ],
-  declarations: [HomePage]
 })
 export class HomePageModule {}
