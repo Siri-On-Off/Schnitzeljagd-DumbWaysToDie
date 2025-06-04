@@ -27,18 +27,19 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
 })
 export class ScannerComponent implements OnInit {
   @Output() scanSuccess = new EventEmitter<void>();
+  private readonly TASK_NUMBER: number = 0;
+
   resultText: string | undefined;
   hasCamera: boolean = false;
   private expectedQrCodeValue: string = 'M335@ICT-BZ';
   taskCompleted = false;
 
-  readonly taskNumber = 0;
 
   constructor(public platform: Platform, protected taskService: TaskService) {}
 
   async ngOnInit() {
     await this.checkCameraAvailability();
-    this.taskService.start(this.taskNumber);
+    this.taskService.start(this.TASK_NUMBER);
   }
 
   async checkCameraAvailability() {
@@ -80,8 +81,8 @@ export class ScannerComponent implements OnInit {
           this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
           this.taskCompleted = true;
           this.scanSuccess.emit();
-          this.taskService.stop(this.taskNumber, true);
-          console.log(this.taskService.printTaskInfo(this.taskNumber));
+          this.taskService.stop(this.TASK_NUMBER, true);
+          console.log(this.taskService.printTaskInfo(this.TASK_NUMBER));
         } else {
           this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
         }
