@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { LeaderboardService, GameResult } from '../services/leaderboard.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { TaskService } from '../services/task.service';
 import {
-  IonContent,
+  IonButton,
+  IonButtons,
+  IonContent, IonFooter,
   IonHeader,
   IonItem,
   IonLabel,
   IonList,
   IonText,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from "@ionic/angular/standalone";
 import {DatePipe} from "@angular/common";
 
@@ -26,21 +31,66 @@ import {DatePipe} from "@angular/common";
     IonItem,
     IonLabel,
     IonText,
-    DatePipe
+    IonFooter,
+    IonButtons,
+    IonButton,
+    DatePipe,
   ]
 })
 export class LeaderboardPage implements OnInit {
   results: GameResult[] = [];
 
-  constructor(private leaderboard: LeaderboardService) {}
+  constructor(
+    private leaderboard: LeaderboardService,
+    private taskService: TaskService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
   async ngOnInit() {
-    this.results = await this.leaderboard.getResults();
+    const rawResults = await this.leaderboard.getResults();
+    this.results = rawResults.sort((a, b) => a.totalTime - b.totalTime);
   }
 
   formatTime(totalSeconds: number): string {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${minutes}m ${seconds}s`;
+  }
+
+  goToHome() {
+    this.router.navigateByUrl('/home');
+  }
+
+  async startNewGame() {
+    const alert = await this.alertController.create({
+      header: 'Neues Spiel starten',
+      inputs: [
+        {
+          name: 'playerName',
+          type: 'text',
+          placeholder: 'Dein Name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Starten',
+          handler: (data) => {
+            const name = data.playerName?.trim();
+            if (name) {
+              this.taskService.setPlayerName(name);
+              this.taskService.reset();
+              this.router.navigateByUrl('/tasks/qr');
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
