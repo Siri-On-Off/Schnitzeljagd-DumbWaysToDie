@@ -82,9 +82,13 @@ export class LeaderboardPage implements OnInit {
           handler: (data) => {
             const name = data.playerName?.trim();
             if (name) {
-              this.taskService.setPlayerName(name);
               this.taskService.reset();
+              this.taskService.setPlayerName(name);
               this.router.navigateByUrl('/tasks/qr');
+
+              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.router.navigateByUrl('/tasks/qr');
+              });
             }
           }
         }
