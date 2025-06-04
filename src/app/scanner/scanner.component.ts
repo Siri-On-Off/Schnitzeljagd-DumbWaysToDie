@@ -30,10 +30,16 @@ export class ScannerComponent implements OnInit {
   @Output() scanSuccess = new EventEmitter<void>();
   resultText: string | undefined;
   hasCamera: boolean = false;
-
   private expectedQrCodeValue: string = 'M335@ICT-BZ';
 
+  taskCompleted = false;
+
+  startTime: number | null = null;
+  endTime: number | null = null;
+  diffSeconds: number | null = null;
+
   constructor(public platform: Platform) {
+    this.startTime = new Date().getTime();
   }
 
   async ngOnInit() {
@@ -91,7 +97,16 @@ export class ScannerComponent implements OnInit {
           if (scannedValue === this.expectedQrCodeValue) {
             this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
             console.log('Task solved: QR code matches!');
+
             this.scanSuccess.emit();
+            this.taskCompleted = true;
+            this.endTime = new Date().getTime();
+
+            if (this.startTime && this.endTime) {
+              const diffMilliseconds = this.endTime - this.startTime;
+              this.diffSeconds = Math.round(diffMilliseconds / 1000);
+              console.log(`Aufgabe abgeschlossen in ${this.diffSeconds} Sekunden.`);
+            }
           } else {
             this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
             console.log('QR code does not match the expected value.');
