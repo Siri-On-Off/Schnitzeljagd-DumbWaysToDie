@@ -18,38 +18,42 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   currentCoords?: { latitude: number; longitude: number };
   targetCoords = this.ictCenterCoords;
   distanceToTarget?: number;
-  positionSubscription?: Subscription;
+  watchId: string | null = null;
   taskCompleted = false;
 
 
   async ngOnInit() {
-    await this.getCurrentPosition();
-    this.startTracking();
+    await this.startWatchingPosition();
   }
 
   ngOnDestroy() {
-    this.positionSubscription?.unsubscribe();
-  }
-
-  async getCurrentPosition() {
-    try {
-      const position = await Geolocation.getCurrentPosition();
-      this.currentCoords = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-      };
-      this.calculateDistance();
-    } catch (error) {
-      console.error('Fehler beim Abrufen der Position', error);
-
+    if (this.watchId) {
+      Geolocation.clearWatch({ id: this.watchId });
     }
   }
 
-  // Alle 5 Sekunden wird getCurrentPosition() aufgerufen.
-  startTracking() {
-    this.positionSubscription = interval(5000).subscribe(() => {
-      this.getCurrentPosition();
-    });
+  async startWatchingPosition() {
+    try {
+      this.watchId = await Geolocation.watchPosition(
+        { enableHighAccuracy: true },
+        (position, err) => {
+          if (err) {
+            console.error('Fehler beim Abrufen der Position', err);
+            return;
+          }
+
+          if (position) {
+            this.currentCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            };
+            this.calculateDistance();
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Fehler beim Starten von watchPosition', error);
+    }
   }
 
   calculateDistance() {
