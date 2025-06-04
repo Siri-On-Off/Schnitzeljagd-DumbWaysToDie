@@ -47,6 +47,6 @@ export class DeviceStatusTaskComponent {
   }
 
   goToNextTask() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/result');
   }
 }
