@@ -3,6 +3,7 @@ import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
 import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import {ScannerComponent} from "../scanner/scanner.component";
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar}
     IonToolbar,
     IonTitle,
     IonContent,
-    IonButton
+    IonButton,
   ],
 })
 export class HomePage {
