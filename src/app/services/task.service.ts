@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class TaskService {
   private startTimes: number[] = [0, 0, 0, 0];
-  private times: number[] = [0, 0, 0, 0];
+  private timesSec: number[] = [0, 0, 0, 0];
   private schnitzelPoints: number[] = [0, 0, 0, 0];
   private potatoPoints: number[] = [0, 0, 0, 0];
   private startValue = 0;
@@ -16,10 +16,9 @@ export class TaskService {
     this.startTimes[task] = Date.now();
   }
 
-  stop(task: number, taskCompleted: boolean): number {
-    const now = Date.now();
-    const durationSec = Math.round((now - this.startTimes[task]) / 1000);
-    this.times[task] = durationSec;
+  stop(task: number, taskCompleted: boolean) {
+    const durationSec = Math.round((Date.now() - this.startTimes[task]) / 1000);
+    this.timesSec[task] = durationSec;
     this.startTimes[task] = 0;
 
     if (taskCompleted) {
@@ -29,12 +28,10 @@ export class TaskService {
     if (durationSec > minToSeconds(this.maxTaskDurationMin[task])) {
       this.potatoPoints[task] = 1;
     }
-
-    return durationSec;
   }
 
   printTaskInfo(task: number): string {
-    return `Zeit: ${this.times[task]}s, Schnitzel: ${this.schnitzelPoints[task]}, Kartoffeln: ${this.potatoPoints[task]}`;
+    return `Zeit: ${this.timesSec[task]}s, Schnitzel: ${this.schnitzelPoints[task]}, Kartoffeln: ${this.potatoPoints[task]}`;
   }
 
   printTotal(): string {
@@ -42,7 +39,7 @@ export class TaskService {
   }
 
   getTotalTime(): number {
-    return this.times.reduce((sum, value) => sum + value, this.startValue);
+    return this.timesSec.reduce((sum, value) => sum + value, this.startValue);
   }
 
   getTotalSchnitzel(): number {
@@ -81,7 +78,7 @@ export class TaskService {
 
   reset(): void {
     this.startTimes = [0, 0, 0, 0];
-    this.times = [0, 0, 0, 0];
+    this.timesSec = [0, 0, 0, 0];
     this.schnitzelPoints = [0, 0, 0, 0];
     this.potatoPoints = [0, 0, 0, 0];
   }
