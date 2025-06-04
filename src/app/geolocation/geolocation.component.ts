@@ -16,9 +16,9 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   migrosKriensCoords = { latitude: 47.02758723687247, longitude: 8.300906172755733 };
   targetCoords = this.ictCenterCoords;
   distanceToTarget: WritableSignal<number | undefined> = signal(undefined);
-  watchId: string | null = null;
   taskCompleted = false;
 
+  watchId: string | null = null;
   startTime: number | null = null;
   endTime: number | null = null;
   diffSeconds: number | null = null;
