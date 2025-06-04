@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
 
@@ -12,6 +12,8 @@ import {DecimalPipe} from "@angular/common";
   ]
 })
 export class GeolocationComponent implements OnInit, OnDestroy {
+  @Output() gpsSuccessEvent = new EventEmitter<void>();
+
   ictCenterCoords = { latitude: 47.027171453084655, longitude: 8.300770702636505 };
   migrosKriensCoords = { latitude: 47.02758723687247, longitude: 8.300906172755733 };
   targetCoords = this.ictCenterCoords;
@@ -65,6 +67,7 @@ export class GeolocationComponent implements OnInit, OnDestroy {
       if (!this.taskCompleted && this.distanceToTarget()! <= 15) {
         this.taskCompleted = true;
         this.endTime = new Date().getTime();
+        this.gpsSuccessEvent.emit();
 
         if (this.startTime && this.endTime) {
           const diffMilliseconds = this.endTime - this.startTime;

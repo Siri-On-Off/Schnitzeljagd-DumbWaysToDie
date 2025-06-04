@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { QrTaskComponent } from './qr-task.component';
+import { GpsTaskComponent } from './gps-task.page';
 
-describe('QrTaskComponent', () => {
-  let component: QrTaskComponent;
-  let fixture: ComponentFixture<QrTaskComponent>;
+describe('GpsTaskComponent', () => {
+  let component: GpsTaskComponent;
+  let fixture: ComponentFixture<GpsTaskComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ QrTaskComponent ],
+      declarations: [ GpsTaskComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(QrTaskComponent);
+    fixture = TestBed.createComponent(GpsTaskComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
