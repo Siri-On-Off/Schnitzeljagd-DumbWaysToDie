@@ -27,7 +27,7 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
 })
 export class ScannerComponent implements OnInit {
   @Output() scanSuccess = new EventEmitter<void>();
-  private readonly TASK_NUMBER: number = 0;
+  protected readonly TASK_NUMBER: number = 0;
 
   resultText: string | undefined;
   hasCamera: boolean = false;
