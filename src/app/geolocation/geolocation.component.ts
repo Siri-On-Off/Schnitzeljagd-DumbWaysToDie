@@ -19,8 +19,12 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   watchId: string | null = null;
   taskCompleted = false;
 
+  startTime: number | null = null;
+  endTime: number | null = null;
+  diffSeconds: number | null = null;
 
   async ngOnInit() {
+    this.startTime = new Date().getTime();
     await this.startWatchingPosition();
   }
 
@@ -57,7 +61,17 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   calculateDistance(currentCoords: { latitude: number; longitude: number }) {
     if (currentCoords) {
       this.distanceToTarget.set(haversineDistance(currentCoords, this.targetCoords));
-      this.taskCompleted = this.distanceToTarget()! <= 15;
+
+      if (!this.taskCompleted && this.distanceToTarget()! <= 15) {
+        this.taskCompleted = true;
+        this.endTime = new Date().getTime();
+
+        if (this.startTime && this.endTime) {
+          const diffMilliseconds = this.endTime - this.startTime;
+          this.diffSeconds = Math.round(diffMilliseconds / 1000);
+          console.log(`Aufgabe abgeschlossen in ${this.diffSeconds} Sekunden.`);
+        }
+      }
     }
   }
 }

@@ -5,3 +5,7 @@
 @if (taskCompleted) {
   <p>Task was successfull</p>
 }
+
+@if (diffSeconds !== null) {
+  <p>Aufgabe erledigt in {{ diffSeconds }} Sekunden.</p>
+}
