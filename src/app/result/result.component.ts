@@ -46,7 +46,7 @@ export class ResultPage {
       date: new Date().toISOString(),
       schnitzel: this.taskService.getTotalSchnitzel(),
       potato: this.taskService.getTotalPotatoes(),
-      totalTime: this.taskService.getTotalTime()
+      totalTime: this.taskService.getTotalTimeSec()
     });
 
     // Zurücksetzen & Navigation
