@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { Router } from '@angular/router';
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 import {GeolocationComponent} from "../../geolocation/geolocation.component";
 import {Haptics} from "@capacitor/haptics";
-import {NgIf} from "@angular/common";
 import {TaskService} from "../../services/task.service";
 
 @Component({
@@ -22,14 +21,10 @@ import {TaskService} from "../../services/task.service";
   ],
   standalone: true
 })
-export class GpsTaskComponent implements OnInit {
+export class GpsTaskComponent {
   gpsSuccessful = false;
 
   constructor(private router: Router, private taskService: TaskService) {}
-
-  ngOnInit() {
-    this.taskService.start(1);
-  }
 
   onGpsTaskCompleted() {
     this.gpsSuccessful = true;
@@ -44,6 +39,7 @@ export class GpsTaskComponent implements OnInit {
   }
 
   skipTask() {
+    this.taskService.stop(1, false);
     this.router.navigateByUrl('/tasks/distance');
   }
 
@@ -52,7 +48,6 @@ export class GpsTaskComponent implements OnInit {
   }
 
   goToNextTask() {
-    this.taskService.stop(1, true);
     this.router.navigateByUrl('/tasks/distance');
   }
 }

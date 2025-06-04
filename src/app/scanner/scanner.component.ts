@@ -38,8 +38,8 @@ export class ScannerComponent implements OnInit {
   constructor(public platform: Platform, protected taskService: TaskService) {}
 
   async ngOnInit() {
-    await this.checkCameraAvailability();
     this.taskService.start(this.TASK_NUMBER);
+    await this.checkCameraAvailability();
   }
 
   async checkCameraAvailability() {

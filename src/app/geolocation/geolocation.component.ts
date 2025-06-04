@@ -15,7 +15,7 @@ import {TaskService} from "../services/task.service";
 export class GeolocationComponent implements OnInit, OnDestroy {
   @Output() gpsSuccessEvent = new EventEmitter<void>();
 
-  protected readonly TASK_NUMBER: number = 2;
+  protected readonly TASK_NUMBER: number = 1;
   protected readonly TARGET_RADIUS_METERS: number = 15;
 
   ictCenterCoords = { latitude: 47.027171453084655, longitude: 8.300770702636505 };

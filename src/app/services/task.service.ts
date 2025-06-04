@@ -30,11 +30,18 @@ export class TaskService {
   start(task: number): void {
     this.assertValidTask(task);
     this.startTimesMs[task] = Date.now();
+    console.log(`START:  Task: ${task}, start: ${this.startTimesMs[task]}`);
   }
 
   stop(task: number, taskCompleted: boolean): void {
     this.assertValidTask(task);
 
+    if (this.startTimesMs[task] === 0) {
+      console.error(`Task ${task} was stopped, but never started before.`);
+      return;
+    }
+
+    console.log(`STOP:  Task: ${task}, start: ${this.startTimesMs[task]}, now: ${Date.now()}, diff: ${Date.now() - this.startTimesMs[task]}`);
     const durationSec = this.msToSec(Date.now() - this.startTimesMs[task]);
     this.timesSec[task] = durationSec;
     this.startTimesMs[task] = 0;
@@ -43,7 +50,7 @@ export class TaskService {
     if (durationSec > this.minToSec(this.MAX_TASK_DURATION_MIN[task])) {
       this.potatoPoints[task] = 1;
     }
-    console.log(`Stopping task ${task} at ${new Date().toISOString()}`);
+    console.log(`Stopping task ${task} at ${new Date().toISOString()} with ${durationSec} seconds`);
   }
 
   printTaskInfo(task: number): string {

@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { Router } from '@angular/router';
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 import {ScannerComponent} from "../../scanner/scanner.component";
-import {NgIf} from "@angular/common";
 import {Haptics} from "@capacitor/haptics";
 import {TaskService} from "../../services/task.service";
 
@@ -24,14 +23,10 @@ import {TaskService} from "../../services/task.service";
 })
 
 
-export class QrTaskComponent implements OnInit {
+export class QrTaskComponent {
   scanSuccessful = false;
 
   constructor(private router: Router, private taskService: TaskService) {}
-
-  ngOnInit() {
-    this.taskService.start(0);
-  }
 
   async onScanSuccess() {
     this.scanSuccessful = true;
@@ -47,6 +42,7 @@ export class QrTaskComponent implements OnInit {
   }
 
   skipTask() {
+    this.taskService.stop(0, false);
     this.router.navigateByUrl('/tasks/gps');
   }
 
@@ -55,7 +51,6 @@ export class QrTaskComponent implements OnInit {
   }
 
   goToNextTask() {
-    this.taskService.stop(0, true);
     this.router.navigateByUrl('/tasks/gps');
   }
 }
