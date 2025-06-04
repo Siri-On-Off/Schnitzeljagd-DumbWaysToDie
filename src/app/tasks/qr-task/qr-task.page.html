@@ -2,9 +2,11 @@
   <ion-toolbar>
     <ion-title>Aufgabe 1: QR-Code</ion-title>
     <ion-buttons slot="end">
+      @if (!scanSuccessful) {
       <ion-button fill="clear" (click)="skipTask()">Skip
         <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
       </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,14 +24,16 @@
         ❌ Abbrechen
       </ion-button>
 
-      <ion-button
-        color="primary"
-        (click)="goToNextTask()"
-        *ngIf="scanSuccessful"
-        class="next-button"
-      >
-        ▶️ Weiter
-      </ion-button>
+      @if (scanSuccessful){
+        <ion-button
+          color="primary"
+          (click)="goToNextTask()"
+          class="next-button"
+        >
+          ▶️ Weiter
+        </ion-button>
+      }
+
     </div>
   </div>
 </ion-content>

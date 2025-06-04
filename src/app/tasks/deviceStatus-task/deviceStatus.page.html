@@ -2,9 +2,11 @@
   <ion-toolbar>
     <ion-title>Aufgabe 4: Ladezustand</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="skipTask()">Skip
+        @if (!devicePluggedIn) {
+            <ion-button fill="clear" (click)="skipTask()">Skip
         <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
       </ion-button>
+        }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
