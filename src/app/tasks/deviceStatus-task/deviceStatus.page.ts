@@ -40,7 +40,8 @@ export class DeviceStatusTaskComponent {
   }
 
   skipTask() {
-    this.router.navigateByUrl('/home');
+    this.taskService.stop(3, false);
+    this.router.navigateByUrl('/result');
   }
 
   cancelGame() {
@@ -48,7 +49,6 @@ export class DeviceStatusTaskComponent {
   }
 
   goToNextTask() {
-    this.taskService.stop(3, true);
     this.router.navigateByUrl('/result');
   }
 }
