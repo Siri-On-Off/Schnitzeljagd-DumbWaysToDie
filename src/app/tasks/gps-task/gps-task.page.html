@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aufgabe 2: GPS</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="skipTask()">Skip
+        <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="task-wrapper">
+    <h2 class="task-title">Begib dich vor die Migros am Mattenhof in Kriens.</h2>
+
+    <app-geolocation (gpsSuccessEvent)="onGpsTaskCompleted()"></app-geolocation>
+
+    <div class="button-row">
+      <ion-button color="medium" (click)="cancelGame()" class="cancel-button">
+        ❌ Abbrechen
+      </ion-button>
+    </div>
+    <ion-button
+      color="primary"
+      (click)="goToNextTask()"
+      *ngIf="gpsSuccessful"
+      class="next-button"
+    >
+      ▶️ Weiter
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Aufgabe 2: GPS</ion-title>
+    <ion-title>Aufgabe 3: Distanz</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="skipTask()">
+      <ion-button fill="clear" (click)="skipTask()">Skip
         <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -11,21 +11,23 @@
 
 <ion-content class="ion-padding">
   <div class="task-wrapper">
-    <h2 class="task-title">Begib dich vor die Migros am Mattenhof in Kriens.</h2>
-
-    <app-geolocation/>
-
+    <h2 class="task-title">
+      Laufe 20 Meter, um die Aufgabe zu erfüllen.
+    </h2>
     <div class="button-row">
       <ion-button color="medium" (click)="cancelGame()" class="cancel-button">
         ❌ Abbrechen
       </ion-button>
+
+      @if (distanceReached) {
+        <ion-button
+          color="primary"
+          (click)="goToNextTask()"
+          class="next-button"
+        >
+          ▶️ Weiter
+        </ion-button>
+      }
     </div>
-    <ion-button
-      color="primary"
-      (click)="goToNextTask()"
-      class="next-button"
-    >
-      ▶️ Weiter
-    </ion-button>
   </div>
 </ion-content>

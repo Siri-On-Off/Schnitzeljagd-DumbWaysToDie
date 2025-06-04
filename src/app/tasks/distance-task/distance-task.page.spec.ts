@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { QrTaskComponent } from './qr-task.component';
+import { DistanceComponent } from './distance-task.page';
 
-describe('QrTaskComponent', () => {
-  let component: QrTaskComponent;
-  let fixture: ComponentFixture<QrTaskComponent>;
+describe('DistanceComponent', () => {
+  let component: DistanceComponent;
+  let fixture: ComponentFixture<DistanceComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ QrTaskComponent ],
+      declarations: [ DistanceComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(QrTaskComponent);
+    fixture = TestBed.createComponent(DistanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
