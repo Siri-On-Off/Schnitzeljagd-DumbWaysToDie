@@ -15,13 +15,18 @@
     </ion-text>
   }
 
-  @if (!hasCamera && platform.is('hybrid')) {
+  @if (!hasCamera && platform.is('android')) {
     <ion-text>
       <p>Camera is not available or permissions denied. Please enable camera access in your device settings.</p>
     </ion-text>
   }
 
-  @if (diffSeconds !== null) {
-    <p>Aufgabe erledigt in {{ diffSeconds }} Sekunden.</p>
+  @if (taskCompleted) {
+    <p>
+      Task was successfull
+    </p>
+    <p>
+      {{ taskService.printTaskInfo(taskNumber) }}
+    </p>
   }
 </ion-content>

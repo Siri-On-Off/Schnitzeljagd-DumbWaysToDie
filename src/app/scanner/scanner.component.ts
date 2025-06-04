@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import { Camera } from "@capacitor/camera";
+import { TaskService } from '../services/task.service';
 import {
   IonButton,
   IonContent,
@@ -25,42 +25,35 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
     IonText
   ]
 })
-
 export class ScannerComponent implements OnInit {
   @Output() scanSuccess = new EventEmitter<void>();
   resultText: string | undefined;
   hasCamera: boolean = false;
   private expectedQrCodeValue: string = 'M335@ICT-BZ';
-
   taskCompleted = false;
 
-  startTime: number | null = null;
-  endTime: number | null = null;
-  diffSeconds: number | null = null;
+  readonly taskNumber = 0;
 
-  constructor(public platform: Platform) {
-    this.startTime = new Date().getTime();
-  }
+  constructor(public platform: Platform, protected taskService: TaskService) {}
 
   async ngOnInit() {
     await this.checkCameraAvailability();
+    this.taskService.start(this.taskNumber);
   }
 
   async checkCameraAvailability() {
-    // This checks if running on a real device (iOS or Android)
-    if (this.platform.is('hybrid')) {
+    if (this.platform.is('android')) {
       try {
-        const permissionStatus = await Camera.checkPermissions();
-        if (permissionStatus.camera === 'granted') {
-          this.hasCamera = true;
-        } else {
-          const requestResult = await Camera.requestPermissions();
-          if (requestResult.camera === 'granted') {
-            this.hasCamera = true;
-          } else {
-            this.hasCamera = false;
+        const permissionStatus = await BarcodeScanner.checkPermissions();
+        if (permissionStatus.camera !== 'granted') {
+          const requestResult = await BarcodeScanner.requestPermissions();
+          this.hasCamera = requestResult.camera === 'granted';
+          if (!this.hasCamera) {
             console.warn('Camera permission denied.');
+            this.resultText = 'Kamera-Berechtigung verweigert.';
           }
+        } else {
+          this.hasCamera = true;
         }
       } catch (e) {
         console.error('Error checking camera permissions:', e);
@@ -74,56 +67,35 @@ export class ScannerComponent implements OnInit {
   }
 
   async scanQRCode() {
-    if (this.hasCamera) {
-      console.log('Attempting to scan QR code...');
-      try {
-        const barcodePermissionStatus = await BarcodeScanner.checkPermissions();
-        if (barcodePermissionStatus.camera !== 'granted') {
-          const requestResult = await BarcodeScanner.requestPermissions();
-          if (requestResult.camera !== 'granted') {
-            this.resultText = 'Kamera-Berechtigung für den QR-Code-Scanner verweigert.';
-            console.warn(this.resultText);
-            return;
-          }
-        }
+    if (!this.hasCamera) return;
 
-        // Start the barcode scanner
-        const {barcodes} = await BarcodeScanner.scan();
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
 
-        if (barcodes.length > 0) {
-          const scannedValue = barcodes[0].rawValue;
-          console.log('Scanned QR code:', this.resultText);
+      if (barcodes.length > 0) {
+        const scannedValue = barcodes[0].rawValue;
+        console.log('Scanned QR code:', scannedValue);
 
-          if (scannedValue === this.expectedQrCodeValue) {
-            this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
-            console.log('Task solved: QR code matches!');
-
-            this.scanSuccess.emit();
-            this.taskCompleted = true;
-            this.endTime = new Date().getTime();
-
-            if (this.startTime && this.endTime) {
-              const diffMilliseconds = this.endTime - this.startTime;
-              this.diffSeconds = Math.round(diffMilliseconds / 1000);
-              console.log(`Aufgabe abgeschlossen in ${this.diffSeconds} Sekunden.`);
-            }
-          } else {
-            this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
-            console.log('QR code does not match the expected value.');
-          }
+        if (scannedValue === this.expectedQrCodeValue) {
+          this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
+          this.taskCompleted = true;
+          this.scanSuccess.emit();
+          this.taskService.stop(this.taskNumber, true);
+          console.log(this.taskService.printTaskInfo(this.taskNumber));
         } else {
-          this.resultText = 'Kein QR-Code erkannt.';
-          console.log('No QR code detected.');
+          this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
+          this.taskService.stop(this.taskNumber, false);
         }
+      } else {
+        this.resultText = 'Kein QR-Code erkannt.';
       }
-      catch (err: any) {
-        if (err.message && err.message.includes('User cancelled')) { // Common error for scanner dismissed
-          this.resultText = 'QR-Code-Scan abgebrochen.';
-        } else if (err.message && err.message.includes('No camera available')) { // Specific camera issue
-          this.resultText = 'Keine Kamera für den Scan verfügbar.';
-        } else {
-          this.resultText = 'Fehler beim Scannen des QR-Codes. Bitte versuchen Sie es erneut.';
-        }
+    } catch (err: any) {
+      if (err.message?.includes('User cancelled')) {
+        this.resultText = 'QR-Code-Scan abgebrochen.';
+      } else if (err.message?.includes('No camera available')) {
+        this.resultText = 'Keine Kamera für den Scan verfügbar.';
+      } else {
+        this.resultText = 'Fehler beim Scannen des QR-Codes. Bitte versuchen Sie es erneut.';
       }
     }
   }
