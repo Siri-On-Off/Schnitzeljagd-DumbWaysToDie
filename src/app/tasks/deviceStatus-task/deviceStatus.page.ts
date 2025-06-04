@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Haptics } from '@capacitor/haptics';
 import { BatteryComponent } from '../../battery/battery.component';
+import {TaskService} from "../../services/task.service";
 
 @Component({
   selector: 'app-device-status-task',
@@ -23,7 +24,7 @@ import { BatteryComponent } from '../../battery/battery.component';
 export class DeviceStatusTaskComponent {
   devicePluggedIn = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private taskService: TaskService) {}
 
   async onDeviceReady() {
     this.devicePluggedIn = true;
@@ -47,6 +48,7 @@ export class DeviceStatusTaskComponent {
   }
 
   goToNextTask() {
-    this.router.navigateByUrl('/home');
+    this.taskService.stop(3, true);
+    this.router.navigateByUrl('/result');
   }
 }

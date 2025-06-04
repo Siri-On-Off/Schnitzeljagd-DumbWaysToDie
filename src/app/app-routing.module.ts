@@ -4,6 +4,8 @@ import {GpsTaskComponent} from "./tasks/gps-task/gps-task.page";
 import {QrTaskComponent} from "./tasks/qr-task/qr-task.page";
 import {DistanceTaskComponent} from "./tasks/distance-task/distance-task.page";
 import {DeviceStatusTaskComponent} from "./tasks/deviceStatus-task/deviceStatus.page";
+import {ResultPage} from "./result/result.component";
+import {LeaderboardPage} from "./leaderboard/leaderboard.component";
 
 export const routes: Routes = [
   {
@@ -19,6 +21,11 @@ export const routes: Routes = [
   { path: 'tasks/gps', component: GpsTaskComponent },
   { path: 'tasks/distance', component: DistanceTaskComponent },
   { path: 'tasks/deviceStatus', component: DeviceStatusTaskComponent },
+  { path: 'result', component: ResultPage },
+  {
+    path: 'leaderboard',
+    component: LeaderboardPage
+  }
 ];
 
 @NgModule({

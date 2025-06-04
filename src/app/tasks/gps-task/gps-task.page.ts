@@ -18,7 +18,6 @@ import {NgIf} from "@angular/common";
     IonHeader,
     IonContent,
     GeolocationComponent,
-    NgIf
   ],
   standalone: true
 })

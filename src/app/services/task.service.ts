@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TaskService {
+  private playerName: string = '';
   private startTimes: number[] = [0, 0, 0, 0];
   private timesSec: number[] = [0, 0, 0, 0];
   private schnitzelPoints: number[] = [0, 0, 0, 0];
@@ -11,6 +12,14 @@ export class TaskService {
   private startValue = 0;
 
   private maxTaskDurationMin = [2, 3, 3, 1];
+
+  setPlayerName(name: string) {
+    this.playerName = name;
+  }
+
+  getPlayerName(): string {
+    return this.playerName;
+  }
 
   start(task: number): void {
     this.startTimes[task] = Date.now();
@@ -35,7 +44,10 @@ export class TaskService {
   }
 
   printTotal(): string {
-    return `Gesamtzeit: ${this.getTotalTime()}s, Schnitzel: ${this.getTotalSchnitzel()}, Kartoffeln: ${this.getTotalPotatoes()}`;
+    const totalTime = this.getTotalTime();
+    const minutes = Math.floor(totalTime / 60).toString().padStart(2, '0');
+    const seconds = (totalTime % 60).toString().padStart(2, '0');
+    return `Gesamtzeit: ${minutes}:${seconds}, Schnitzel: ${this.getTotalSchnitzel()}, Kartoffeln: ${this.getTotalPotatoes()}`;
   }
 
   getTotalTime(): number {

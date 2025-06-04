@@ -18,7 +18,6 @@ import {Haptics} from "@capacitor/haptics";
     IonHeader,
     IonContent,
     ScannerComponent,
-    NgIf,
   ],
   standalone: true
 })
