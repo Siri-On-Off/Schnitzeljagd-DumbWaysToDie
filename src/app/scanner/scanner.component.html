@@ -20,4 +20,8 @@
       <p>Camera is not available or permissions denied. Please enable camera access in your device settings.</p>
     </ion-text>
   }
+
+  @if (diffSeconds !== null) {
+    <p>Aufgabe erledigt in {{ diffSeconds }} Sekunden.</p>
+  }
 </ion-content>
