@@ -8,7 +8,7 @@ import { Device, BatteryInfo } from '@capacitor/device';
 })
 export class BatteryComponent implements OnInit, OnDestroy {
   isCharging: boolean | undefined = false;
-  taskSuccessful: boolean = false;
+  taskCompleted: boolean = false;
 
   private startTime: number | null = null;
   taskDurationSeconds: number = 0;
@@ -30,7 +30,7 @@ export class BatteryComponent implements OnInit, OnDestroy {
     if (!this.isCharging) {
       // Gerät lädt NOCH NICHT → Starte Zeitmessung und Polling
       this.startTime = Date.now();
-      this.taskSuccessful = false;
+      this.taskCompleted = false;
       this.taskDurationSeconds = 0;
 
       this.pollingInterval = setInterval(() => {
@@ -38,7 +38,7 @@ export class BatteryComponent implements OnInit, OnDestroy {
       }, 2000);
     } else {
       // Gerät lädt bereits beim Seitenaufruf → Aufgabe sofort abgeschlossen
-      this.taskSuccessful = true;
+      this.taskCompleted = true;
       this.taskDurationSeconds = 0;
       console.log('Gerät lädt schon – Messung übersprungen.');
     }
@@ -50,7 +50,7 @@ export class BatteryComponent implements OnInit, OnDestroy {
     // Nur wenn vorher false war und jetzt true, messen
     if (!this.isCharging && info.isCharging) {
       this.isCharging = true;
-      this.taskSuccessful = true;
+      this.taskCompleted = true;
 
       // Finale Dauer in Sekunden berechnen
       if (this.startTime !== null) {

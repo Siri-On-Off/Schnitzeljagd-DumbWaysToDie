@@ -1,8 +1,8 @@
 <div>
   <p><strong>Lädt?</strong> {{ isCharging ? 'Ja' : 'Nein' }}</p>
-  <p><strong>Aufgabe erfolgreich?</strong> {{ taskSuccessful ? 'Ja' : 'Nein' }}</p>
+  <p><strong>Aufgabe erfolgreich?</strong> {{ taskCompleted ? 'Ja' : 'Nein' }}</p>
 
-  @if (taskSuccessful) {
+  @if (taskCompleted) {
     <p>
       Dauer bis zum Ladevorgang: {{ taskDurationSeconds }} Sek.
     </p>
