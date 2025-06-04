@@ -34,7 +34,7 @@ export class QrTaskComponent {
   }
 
   skipTask() {
-    this.router.navigateByUrl('/tasks/next'); // Beispielroute
+    this.router.navigateByUrl('/tasks/gps');
   }
 
   cancelGame() {
@@ -42,6 +42,6 @@ export class QrTaskComponent {
   }
 
   goToNextTask() {
-    this.router.navigateByUrl('/tasks/geolocation');
+    this.router.navigateByUrl('/tasks/gps');
   }
 }

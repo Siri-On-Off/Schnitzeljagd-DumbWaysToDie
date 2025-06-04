@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from "@ionic/angular/standalone";
-import {ScannerComponent} from "../../scanner/scanner.component";
+import {GeolocationComponent} from "../../geolocation/geolocation.component";
 
 @Component({
   selector: 'app-qr-task',
@@ -15,7 +15,7 @@ import {ScannerComponent} from "../../scanner/scanner.component";
     IonToolbar,
     IonHeader,
     IonContent,
-    ScannerComponent
+    GeolocationComponent
   ],
   standalone: true
 })

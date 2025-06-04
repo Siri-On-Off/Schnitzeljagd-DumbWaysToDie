@@ -13,12 +13,8 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  { path: 'task/qr', component: QrTaskComponent },
-  { path: 'task/gps', component: GpsTaskComponent },
-  {
-    path: 'tasks/qr',
-    component: QrTaskComponent
-  }
+  { path: 'tasks/qr', component: QrTaskComponent },
+  { path: 'tasks/gps', component: GpsTaskComponent },
 ];
 
 @NgModule({
