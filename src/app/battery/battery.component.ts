@@ -38,44 +38,46 @@ export class BatteryComponent implements OnInit, OnDestroy {
   }
 
   private async initBatteryCheck() {
+    // Starte in jedem Fall die Aufgabe und das Polling
+    this.taskService.start(this.TASK_NUMBER);
+    this.started = true;
+    this.taskCompleted = false;
+
     const info: BatteryInfo = await Device.getBatteryInfo();
     this.isCharging = info.isCharging;
+    console.log('Initialer Ladezustand:', this.isCharging);
 
-    if (!this.isCharging) {
-      // Gerät lädt NOCH NICHT → Starte Zeitmessung und Polling
-      this.taskService.start(this.TASK_NUMBER);
-      this.started = true;
-      this.taskCompleted = false;
-
-      this.pollingInterval = setInterval(() => {
-        this.checkBatteryStatus();
-      }, 2000);
-    } else {
-      // Gerät lädt bereits beim Seitenaufruf → Aufgabe sofort abgeschlossen
-      this.taskCompleted = true;
-      this.deviceStatusEvent.emit();
-      console.log('Gerät war schon am Laden – keine Zeitmessung für Task ' + this.TASK_NUMBER);
-    }
+    // Polling alle 2 Sekunden starten
+    this.pollingInterval = setInterval(() => {
+      this.checkBatteryStatus();
+    }, 2000);
   }
 
   private async checkBatteryStatus() {
     const info: BatteryInfo = await Device.getBatteryInfo();
     const chargingNow = info.isCharging;
 
-    // Nur dann stop() aufrufen, wenn wir einmal wirklich gestartet haben
+    console.log(`Vorher: ${this.isCharging}, Jetzt: ${chargingNow}`);
+
     if (!this.isCharging && chargingNow && this.started) {
+      // Zustand hat sich von "nicht ladend" zu "ladend" geändert
       this.taskCompleted = true;
-      // stop() nur ein einziges Mal
       this.taskService.stop(this.TASK_NUMBER, true);
       clearInterval(this.pollingInterval);
-      console.log(
-        'Gerät beginnt zu laden – Stoppe Task. Info:',
-        this.taskService.printTaskInfo(this.TASK_NUMBER)
-      );
       this.deviceStatusEvent.emit();
+      console.log('Ladevorgang erkannt – Aufgabe abgeschlossen in Sekunden:', this.taskService.printTaskInfo(this.TASK_NUMBER));
     }
 
-    // Zustand für nächsten Polling-Durchlauf aktualisieren
+    // Sonderfall: Gerät hat bereits beim Init geladen → direkt beim ersten Check stoppen
+    if (this.isCharging === chargingNow && chargingNow && !this.taskCompleted && this.started) {
+      this.taskCompleted = true;
+      this.taskService.stop(this.TASK_NUMBER, true);
+      clearInterval(this.pollingInterval);
+      this.deviceStatusEvent.emit();
+      console.log('Gerät hat bereits beim Init geladen – Aufgabe abgeschlossen in Sekunden:', this.taskService.printTaskInfo(this.TASK_NUMBER));
+    }
+
+    // Zustand für nächsten Durchlauf speichern
     this.isCharging = chargingNow;
   }
 }
