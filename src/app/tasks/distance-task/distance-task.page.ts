@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Haptics } from '@capacitor/haptics';
 import {DistanceComponent} from "../../distance/distance.component";
+import {TaskService} from "../../services/task.service";
 
 @Component({
   selector: 'app-distance-task-task',
@@ -20,10 +21,14 @@ import {DistanceComponent} from "../../distance/distance.component";
   ],
   standalone: true
 })
-export class DistanceTaskComponent {
+export class DistanceTaskComponent implements OnInit {
   distanceReached = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private taskService: TaskService) {
+  }
+
+  ngOnInit() {
+    this.taskService.start(2);
   }
 
   async onDistanceReached() {
@@ -48,6 +53,7 @@ export class DistanceTaskComponent {
   }
 
   goToNextTask() {
+    this.taskService.stop(2, true);
     this.router.navigateByUrl('/tasks/deviceStatus');
   }
 }

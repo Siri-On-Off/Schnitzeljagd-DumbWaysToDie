@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Haptics } from '@capacitor/haptics';
@@ -21,10 +21,14 @@ import {TaskService} from "../../services/task.service";
   ],
   standalone: true
 })
-export class DeviceStatusTaskComponent {
+export class DeviceStatusTaskComponent implements OnInit {
   devicePluggedIn = false;
 
   constructor(private router: Router, private taskService: TaskService) {}
+
+  ngOnInit() {
+    this.taskService.start(3);
+  }
 
   async onDeviceReady() {
     this.devicePluggedIn = true;
@@ -40,7 +44,7 @@ export class DeviceStatusTaskComponent {
   }
 
   skipTask() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/result');
   }
 
   cancelGame() {
