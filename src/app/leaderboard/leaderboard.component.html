@@ -1,26 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Leaderboard</ion-title>
+    <ion-title>🏆 Rangliste</ion-title>
     <ion-buttons slot="primary">
-        <ion-button fill="clear" (click)="toHome()">
+        <ion-button fill="clear" (click)="goToHome()">
           &#10005;
         </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" [fullscreen]="true">
   @if (results.length > 0) {
     <ion-list>
-      @for (result of results; track result) {
+      @for (result of results; let i = $index; track result.name) {
         <ion-item>
           <ion-label>
-            <h2>{{ result.name }}</h2>
+            <h2>#{{ i + 1 }} {{ result.name }}</h2>
             <p>
-              Datum: {{ result.date | date:'shortDate' }}<br>
-              Schnitzel: {{ result.schnitzel }} |
-              Kartoffeln: {{ result.potato }}<br>
-              Zeit: {{ formatTime(result.totalTime) }}
+              🥩 {{ result.schnitzel }} | 🥔 {{ result.potato }} | ⏱ {{ formatTime(result.totalTime) }}<br>
+              <small>{{ result.date | date:'short' }}</small>
             </p>
           </ion-label>
         </ion-item>
@@ -30,3 +28,18 @@
     <ion-text color="medium">Noch keine Ergebnisse gespeichert.</ion-text>
   }
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button expand="block" color="medium" (click)="goToHome()">
+        🏠 Startseite
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button expand="block" color="primary" (click)="startNewGame()">
+        🔄 Neues Spiel
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

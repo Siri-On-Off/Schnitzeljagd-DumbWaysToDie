@@ -35,11 +35,6 @@ export class TaskService {
   stop(task: number, taskCompleted: boolean): void {
     this.assertValidTask(task);
 
-    if (this.startTimesMs[task] === 0) {
-      console.warn(`Aufgabe ${task} wurde nie gestartet.`);
-      return;
-    }
-
     const durationSec = this.msToSec(Date.now() - this.startTimesMs[task]);
     this.timesSec[task] = durationSec;
     this.startTimesMs[task] = 0;
@@ -48,7 +43,7 @@ export class TaskService {
     if (durationSec > this.minToSec(this.MAX_TASK_DURATION_MIN[task])) {
       this.potatoPoints[task] = 1;
     }
-    console.log(`Stopping task ${task} at ${new Date().toISOString()} - Dauer: ${durationSec}s`);
+    console.log(`Stopping task ${task} at ${new Date().toISOString()}`);
   }
 
   printTaskInfo(task: number): string {

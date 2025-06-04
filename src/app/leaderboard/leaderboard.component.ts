@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { LeaderboardService, GameResult } from '../services/leaderboard.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { TaskService } from '../services/task.service';
 import {
-  IonButton, IonButtons,
-  IonContent,
+  IonButton,
+  IonButtons,
+  IonContent, IonFooter,
   IonHeader,
   IonItem,
   IonLabel,
   IonList,
   IonText,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from "@ionic/angular/standalone";
 import {DatePipe} from "@angular/common";
-import {home} from "ionicons/icons";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-leaderboard',
@@ -29,18 +31,30 @@ import {Router} from "@angular/router";
     IonItem,
     IonLabel,
     IonText,
-    DatePipe,
-    IonButton,
+    IonFooter,
     IonButtons,
+    IonButton,
+    DatePipe,
   ]
 })
 export class LeaderboardPage implements OnInit {
   results: GameResult[] = [];
 
-  constructor(private leaderboard: LeaderboardService, private router: Router) {}
+  constructor(
+    private leaderboard: LeaderboardService,
+    private taskService: TaskService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
   async ngOnInit() {
-    this.results = await this.leaderboard.getResults();
+    const rawResults = await this.leaderboard.getResults();
+    this.results = rawResults.sort((a, b) => {
+      if (b.schnitzel !== a.schnitzel) {
+        return b.schnitzel - a.schnitzel;
+      }
+      return a.totalTime - b.totalTime;
+    });
   }
 
   formatTime(totalSeconds: number): string {
@@ -49,9 +63,43 @@ export class LeaderboardPage implements OnInit {
     return `${minutes}m ${seconds}s`;
   }
 
-  protected readonly home = home;
-
-  toHome() {
+  goToHome() {
     this.router.navigateByUrl('/home');
+  }
+
+  async startNewGame() {
+    const alert = await this.alertController.create({
+      header: 'Neues Spiel starten',
+      inputs: [
+        {
+          name: 'playerName',
+          type: 'text',
+          placeholder: 'Dein Name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Starten',
+          handler: (data) => {
+            const name = data.playerName?.trim();
+            if (name) {
+              this.taskService.reset();
+              this.taskService.setPlayerName(name);
+              this.router.navigateByUrl('/tasks/qr');
+
+              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.router.navigateByUrl('/tasks/qr');
+              });
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
