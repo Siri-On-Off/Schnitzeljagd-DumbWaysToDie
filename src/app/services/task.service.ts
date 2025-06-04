@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class TaskService {
   private readonly START_VALUE: number = 0;
   private readonly MAX_TASK_DURATION_MIN: number[] = [2, 3, 3, 1];
-  private readonly NUM_TASKS: number = 4;
+  private readonly NUM_TASKS: number = 3;
 
   private playerName: string = '';
   private startTimesMs: number[] = [0, 0, 0, 0];
@@ -29,11 +29,6 @@ export class TaskService {
 
   stop(task: number, taskCompleted: boolean): void {
     this.assertValidTask(task);
-
-    if (!this.startTimesMs[task]) {
-      console.warn(`Task ${task} wurde gestoppt, ohne gestartet worden zu sein!`);
-      return;
-    }
 
     const durationSec = this.msToSec(Date.now() - this.startTimesMs[task]);
     this.timesSec[task] = durationSec;
@@ -101,7 +96,7 @@ export class TaskService {
   }
 
   private assertValidTask(task: number): void {
-    if (task < 0 || task >= this.NUM_TASKS) {
+    if (task < 0 || task > this.NUM_TASKS) {
       throw new Error(`Ungültiger Aufgaben-Index: ${task}`);
     }
   }

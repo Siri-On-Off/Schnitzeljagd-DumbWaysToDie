@@ -1,10 +1,22 @@
-<div>
-  <p><strong>Lädt?</strong> {{ isCharging ? 'Ja' : 'Nein' }}</p>
-  <p><strong>Aufgabe erfolgreich?</strong> {{ taskCompleted ? 'Ja' : 'Nein' }}</p>
+<!-- Ladezustand -->
+<ion-card>
+  <ion-card-content>
+    <ion-text color="{{ isCharging ? 'primary' : 'medium' }}">
+      <h3>
+        <ion-icon name="{{ isCharging ? 'battery-charging-outline' : 'battery-dead-outline' }}"></ion-icon>
+        {{ isCharging ? 'Ladevorgang läuft…' : 'Nicht am Laden' }}
+      </h3>
+    </ion-text>
+  </ion-card-content>
+</ion-card>
 
-  @if (taskCompleted) {
-    <p>
-      Dauer bis zum Ladevorgang: {{ taskDurationSeconds }} Sek.
-    </p>
-  }
-</div>
+@if (taskCompleted) {
+  <ion-card>
+    <ion-card-content>
+      <ion-text color="success">
+        <h3>🎉 Aufgabe abgeschlossen!</h3>
+      </ion-text>
+      <p>{{ taskService.printTaskInfo(TASK_NUMBER) }}</p>
+    </ion-card-content>
+  </ion-card>
+}
