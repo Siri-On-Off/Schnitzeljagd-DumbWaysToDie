@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Camera } from "@capacitor/camera";
 import {
   IonButton,
@@ -25,7 +25,9 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
     IonText
   ]
 })
+
 export class ScannerComponent implements OnInit {
+  @Output() scanSuccess = new EventEmitter<void>();
   resultText: string | undefined;
   hasCamera: boolean = false;
 
@@ -89,6 +91,7 @@ export class ScannerComponent implements OnInit {
           if (scannedValue === this.expectedQrCodeValue) {
             this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
             console.log('Task solved: QR code matches!');
+            this.scanSuccess.emit();
           } else {
             this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
             console.log('QR code does not match the expected value.');

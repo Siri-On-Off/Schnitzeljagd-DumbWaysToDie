@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 import {ScannerComponent} from "../../scanner/scanner.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-qr-task',
@@ -15,19 +16,32 @@ import {ScannerComponent} from "../../scanner/scanner.component";
     IonToolbar,
     IonHeader,
     IonContent,
-    ScannerComponent
+    ScannerComponent,
+    NgIf,
   ],
   standalone: true
 })
+
+
 export class QrTaskComponent {
+  scanSuccessful = false;
+
   constructor(private router: Router) {}
 
+  onScanSuccess() {
+    this.scanSuccessful = true;
+    console.log("QR-Scan erfolgreich!");
+  }
+
   skipTask() {
-    // Später: Logik zum Überspringen oder Merken
     this.router.navigateByUrl('/tasks/next'); // Beispielroute
   }
 
   cancelGame() {
     this.router.navigateByUrl('/home');
+  }
+
+  goToNextTask() {
+    this.router.navigateByUrl('/tasks/geolocation');
   }
 }

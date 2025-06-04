@@ -3,7 +3,6 @@ import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
 import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
-import {GeolocationComponent} from "../geolocation/geolocation.component";
 
 @Component({
   selector: 'app-home',
@@ -15,8 +14,7 @@ import {GeolocationComponent} from "../geolocation/geolocation.component";
     IonToolbar,
     IonTitle,
     IonContent,
-    IonButton,
-    GeolocationComponent
+    IonButton
   ],
 })
 export class HomePage {
