@@ -24,7 +24,7 @@ import {TaskService} from "../../services/task.service";
 export class DeviceStatusTaskComponent {
   devicePluggedIn = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private taskService: TaskService) {}
 
   async onDeviceReady() {
     this.devicePluggedIn = true;
@@ -48,6 +48,7 @@ export class DeviceStatusTaskComponent {
   }
 
   goToNextTask() {
+    this.taskService.stop(3, true);
     this.router.navigateByUrl('/result');
   }
 }

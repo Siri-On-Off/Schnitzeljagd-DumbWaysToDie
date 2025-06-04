@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
 import { TaskService } from '../services/task.service';
+import { LeaderboardService } from '../services/leaderboard.service';
 import { Router } from '@angular/router';
 import {
   IonButton,
   IonContent,
   IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonTitle,
-  IonToolbar
-} from "@ionic/angular/standalone";
-import {FormsModule} from "@angular/forms";
+  IonToolbar,
+} from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-result',
@@ -23,20 +21,35 @@ import {FormsModule} from "@angular/forms";
     IonToolbar,
     IonTitle,
     IonContent,
-    IonItem,
-    IonLabel,
-    IonInput,
     IonButton,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class ResultPage {
-  name: string = '';
 
-  constructor(public taskService: TaskService, private router: Router) {}
+  constructor(
+    public taskService: TaskService,
+    private leaderboard: LeaderboardService,
+    private router: Router
+  ) {}
 
-  submit() {
-    this.taskService.submitResults(this.name);
+  async submit() {
+    // Name aus TaskService holen (angenommen, du speicherst ihn dort)
+    const playerName = this.taskService.getPlayerName();  // Falls nicht vorhanden, dann aus this.name
+
+    // Ergebnis an Google Form senden
+    this.taskService.submitResults(playerName);
+
+    // Ergebnis lokal für Leaderboard speichern
+    await this.leaderboard.addResult({
+      name: playerName,
+      date: new Date().toISOString(),
+      schnitzel: this.taskService.getTotalSchnitzel(),
+      potato: this.taskService.getTotalPotatoes(),
+      totalTime: this.taskService.getTotalTime()
+    });
+
+    // Zurücksetzen & Navigation
     this.taskService.reset();
     this.router.navigateByUrl('/leaderboard');
   }

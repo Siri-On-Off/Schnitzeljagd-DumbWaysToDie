@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Leaderboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (results.length > 0) {
+    <ion-list>
+      @for (result of results; track result) {
+        <ion-item>
+          <ion-label>
+            <h2>{{ result.name }}</h2>
+            <p>
+              Datum: {{ result.date | date:'shortDate' }}<br>
+              Schnitzel: {{ result.schnitzel }} |
+              Kartoffeln: {{ result.potato }}<br>
+              Zeit: {{ formatTime(result.totalTime) }}
+            </p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <ion-text color="medium">Noch keine Ergebnisse gespeichert.</ion-text>
+  }
+</ion-content>

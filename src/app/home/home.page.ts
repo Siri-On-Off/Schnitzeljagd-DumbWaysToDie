@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
 import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import { TaskService } from '../services/task.service';
+
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomePage {
 
   constructor(
     private alertCtrl: AlertController,
-    private gameService: GameService,
+    private taskService: TaskService,
     private permissionService: PermissionService,
     private router: Router
   ) {}
@@ -72,7 +73,7 @@ export class HomePage {
       return;
     }
 
-    this.gameService.setPlayer(this.playerName);
+    this.taskService.setPlayerName(this.playerName);
     await this.router.navigateByUrl('/tasks/qr');
   }
 
