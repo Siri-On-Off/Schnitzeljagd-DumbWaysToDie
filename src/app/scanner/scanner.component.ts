@@ -84,7 +84,6 @@ export class ScannerComponent implements OnInit {
           console.log(this.taskService.printTaskInfo(this.taskNumber));
         } else {
           this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
-          this.taskService.stop(this.taskNumber, false);
         }
       } else {
         this.resultText = 'Kein QR-Code erkannt.';
