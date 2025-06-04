@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
-import { Geolocation } from '@capacitor/geolocation';
+import {Geolocation} from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
+import {TaskService} from "../services/task.service";
 
 @Component({
   selector: 'app-geolocation',
@@ -21,12 +22,12 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   taskCompleted = false;
 
   watchId: string | null = null;
-  startTime: number | null = null;
-  endTime: number | null = null;
-  diffSeconds: number | null = null;
+  readonly taskNumber = 1;
+
+  constructor(protected taskService: TaskService) {}
 
   async ngOnInit() {
-    this.startTime = new Date().getTime();
+    this.taskService.start(this.taskNumber);
     await this.startWatchingPosition();
   }
 
@@ -66,14 +67,10 @@ export class GeolocationComponent implements OnInit, OnDestroy {
 
       if (!this.taskCompleted && this.distanceToTarget()! <= 15) {
         this.taskCompleted = true;
-        this.endTime = new Date().getTime();
         this.gpsSuccessEvent.emit();
 
-        if (this.startTime && this.endTime) {
-          const diffMilliseconds = this.endTime - this.startTime;
-          this.diffSeconds = Math.round(diffMilliseconds / 1000);
-          console.log(`Aufgabe abgeschlossen in ${this.diffSeconds} Sekunden.`);
-        }
+        this.taskService.stop(this.taskNumber, true);
+        console.log(this.taskService.printTaskInfo(this.taskNumber));
       }
     }
   }
