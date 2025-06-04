@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DeviceStatusPage } from './device-status.page';
+import { DeviceStatusPage } from './deviceStatus.page';
 
 describe('DeviceStatusPage', () => {
   let component: DeviceStatusPage;

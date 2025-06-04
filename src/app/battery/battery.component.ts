@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import { Device, BatteryInfo } from '@capacitor/device';
 
 @Component({
@@ -7,6 +7,9 @@ import { Device, BatteryInfo } from '@capacitor/device';
   styleUrls: ['./battery.component.scss'],
 })
 export class BatteryComponent implements OnInit, OnDestroy {
+
+  @Output() deviceStatusEvent = new EventEmitter<void>();
+
   isCharging: boolean | undefined = false;
   taskCompleted: boolean = false;
 
@@ -52,13 +55,14 @@ export class BatteryComponent implements OnInit, OnDestroy {
       this.isCharging = true;
       this.taskCompleted = true;
 
+
       // Finale Dauer in Sekunden berechnen
       if (this.startTime !== null) {
         this.taskDurationSeconds = Math.floor(
           (Date.now() - this.startTime) / 1000
         );
       }
-
+      this.deviceStatusEvent.emit();
       clearInterval(this.pollingInterval);
       this.startTime = null;
 
