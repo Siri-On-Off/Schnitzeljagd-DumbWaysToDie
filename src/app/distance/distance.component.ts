@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
 
@@ -12,6 +12,8 @@ import {DecimalPipe} from "@angular/common";
   ]
 })
 export class DistanceComponent  implements OnInit, OnDestroy {
+  @Output() distanceSuccessEvent = new EventEmitter<void>();
+
   distanceGoalInMeters = 20;
   totalDistanceTravelled: WritableSignal<number> = signal(0);
   previousCoords: { latitude: number; longitude: number } | null = null;
@@ -67,6 +69,7 @@ export class DistanceComponent  implements OnInit, OnDestroy {
       if (!this.taskCompleted && updatedTotal >= this.distanceGoalInMeters) {
         this.taskCompleted = true;
         this.endTime = new Date().getTime();
+        this.distanceSuccessEvent.emit();
 
         if (this.startTime && this.endTime) {
           const diffMilliseconds = this.endTime - this.startTime;

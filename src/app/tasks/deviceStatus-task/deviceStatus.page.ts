@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Haptics } from '@capacitor/haptics';
-import {DistanceComponent} from "../../distance/distance.component";
+import { BatteryComponent } from '../../battery/battery.component';
 
 @Component({
-  selector: 'app-distance-task-task',
-  templateUrl: './distance-task.page.html',
-  styleUrls: ['./distance-task.page.scss'],
+  selector: 'app-device-status-task',
+  templateUrl: './deviceStatus.page.html',
+  styleUrls: ['./deviceStatus.page.scss'],
   imports: [
     IonIcon,
     IonButton,
@@ -16,19 +16,18 @@ import {DistanceComponent} from "../../distance/distance.component";
     IonToolbar,
     IonHeader,
     IonContent,
-    DistanceComponent,
+    BatteryComponent,
   ],
   standalone: true
 })
-export class DistanceTaskComponent {
-  distanceReached = false;
+export class DeviceStatusTaskComponent {
+  devicePluggedIn = false;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
-  async onDistanceReached() {
-    this.distanceReached = true;
-    console.log('Ziel-Distanz erreicht!');
+  async onDeviceReady() {
+    this.devicePluggedIn = true;
+    console.log('Gerätestatus erkannt!');
 
     setTimeout(async () => {
       try {
@@ -40,7 +39,7 @@ export class DistanceTaskComponent {
   }
 
   skipTask() {
-    this.router.navigateByUrl('/tasks/deviceStatus');
+    this.router.navigateByUrl('/home');
   }
 
   cancelGame() {
@@ -48,6 +47,6 @@ export class DistanceTaskComponent {
   }
 
   goToNextTask() {
-    this.router.navigateByUrl('/tasks/deviceStatus');
+    this.router.navigateByUrl('/home');
   }
 }
