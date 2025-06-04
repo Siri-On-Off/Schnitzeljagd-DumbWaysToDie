@@ -1,0 +1,15 @@
+<h2>Strecke laufen</h2>
+
+<p>Zurückgelegte Strecke: {{ totalDistanceTravelled() | number:'1.0-2' }} Meter</p>
+
+@if (taskCompleted) {
+  <p>
+    🎉 Ziel erreicht in {{ diffSeconds }} Sekunden!
+  </p>
+}
+
+@if (!taskCompleted) {
+  <p>
+    Noch {{ (distanceGoalInMeters - totalDistanceTravelled()) | number:'1.0-2' }} Meter zu gehen...
+  </p>
+}
