@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { interval, Subscription } from "rxjs";
 import {DecimalPipe} from "@angular/common";
 
 @Component({
@@ -15,9 +14,8 @@ import {DecimalPipe} from "@angular/common";
 export class GeolocationComponent implements OnInit, OnDestroy {
   ictCenterCoords = { latitude: 47.027171453084655, longitude: 8.300770702636505 };
   migrosKriensCoords = { latitude: 47.02758723687247, longitude: 8.300906172755733 };
-  currentCoords?: { latitude: number; longitude: number };
   targetCoords = this.ictCenterCoords;
-  distanceToTarget?: number;
+  distanceToTarget: WritableSignal<number | undefined> = signal(undefined);
   watchId: string | null = null;
   taskCompleted = false;
 
@@ -43,11 +41,11 @@ export class GeolocationComponent implements OnInit, OnDestroy {
           }
 
           if (position) {
-            this.currentCoords = {
+            const currentCoords = {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude
             };
-            this.calculateDistance();
+            this.calculateDistance(currentCoords);
           }
         }
       );
@@ -56,10 +54,10 @@ export class GeolocationComponent implements OnInit, OnDestroy {
     }
   }
 
-  calculateDistance() {
-    if (this.currentCoords) {
-      this.distanceToTarget = haversineDistance(this.currentCoords, this.targetCoords);
-      this.taskCompleted = this.distanceToTarget <= 2;
+  calculateDistance(currentCoords: { latitude: number; longitude: number }) {
+    if (currentCoords) {
+      this.distanceToTarget.set(haversineDistance(currentCoords, this.targetCoords));
+      this.taskCompleted = this.distanceToTarget()! <= 15;
     }
   }
 }

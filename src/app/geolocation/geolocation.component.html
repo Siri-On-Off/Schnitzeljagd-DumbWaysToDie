@@ -1,3 +1,7 @@
-@if (distanceToTarget) {
-  <p>Entfernung: {{ distanceToTarget | number:'1.0-2' }} Meter</p>
+@if (distanceToTarget()) {
+  <p>Entfernung: {{ distanceToTarget() | number:'1.0-2' }} Meter</p>
+}
+
+@if (taskCompleted) {
+  <p>Task was successfull</p>
 }
