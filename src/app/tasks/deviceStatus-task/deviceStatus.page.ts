@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Haptics } from '@capacitor/haptics';
 import { BatteryComponent } from '../../battery/battery.component';
+import {TaskService} from "../../services/task.service";
 
 @Component({
   selector: 'app-device-status-task',

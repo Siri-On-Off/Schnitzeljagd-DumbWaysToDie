@@ -35,7 +35,10 @@ export class TaskService {
   }
 
   printTotal(): string {
-    return `Gesamtzeit: ${this.getTotalTime()}s, Schnitzel: ${this.getTotalSchnitzel()}, Kartoffeln: ${this.getTotalPotatoes()}`;
+    const totalTime = this.getTotalTime();
+    const minutes = Math.floor(totalTime / 60).toString().padStart(2, '0');
+    const seconds = (totalTime % 60).toString().padStart(2, '0');
+    return `Gesamtzeit: ${minutes}:${seconds}, Schnitzel: ${this.getTotalSchnitzel()}, Kartoffeln: ${this.getTotalPotatoes()}`;
   }
 
   getTotalTime(): number {
