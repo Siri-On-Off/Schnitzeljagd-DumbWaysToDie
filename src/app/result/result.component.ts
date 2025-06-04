@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TaskService } from '../services/task.service';
+import {TotalResult, TaskService} from '../services/task.service';
 import { LeaderboardService } from '../services/leaderboard.service';
 import { Router } from '@angular/router';
 import {
@@ -27,11 +27,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class ResultPage {
 
+  private result: TotalResult;
+
   constructor(
     public taskService: TaskService,
     private leaderboard: LeaderboardService,
     private router: Router
-  ) {}
+  ) {
+    this.result = taskService.getTotalResult();
+  }
 
   async submit() {
     // Name aus TaskService holen (angenommen, du speicherst ihn dort)
@@ -55,6 +59,18 @@ export class ResultPage {
   }
 
   get results() {
-    return this.taskService.printTotal();
+    return this.taskService.getTotalResult();
+  }
+
+  get totalTime() {
+    return this.result.totalTime;
+  }
+
+  get schnitzel() {
+    return this.result.schnitzel;
+  }
+
+  get potatoes() {
+    return this.result.potatoes;
   }
 }

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 
+export interface TotalResult {
+  totalTime: string,
+  schnitzel: number,
+  potatoes: number,
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly START_VALUE: number = 0;
   private readonly MAX_TASK_DURATION_MIN: number[] = [2, 3, 3, 1];
   private readonly NUM_TASKS: number = 3;
 
@@ -51,8 +56,12 @@ export class TaskService {
     return `Zeit: ${this.formatTimeMinSec(this.timesSec[task])}, Schnitzel: ${this.schnitzelPoints[task]}, Kartoffeln: ${this.potatoPoints[task]}`;
   }
 
-  printTotal(): string {
-    return `Gesamtzeit: ${this.formatTimeMinSec(this.getTotalTimeSec())}, Schnitzel: ${this.getTotalSchnitzel()}, Kartoffeln: ${this.getTotalPotatoes()}`;
+  getTotalResult(): TotalResult {
+    return {
+      totalTime: this.formatTimeMinSec(this.getTotalTimeSec()),
+      schnitzel: this.getTotalSchnitzel(),
+      potatoes: this.getTotalPotatoes()
+    }
   }
 
   getTotalTimeSec(): number {
@@ -68,7 +77,7 @@ export class TaskService {
   }
 
   private sum(arr: number[]): number {
-    return arr.reduce((sum, val) => sum + val, this.START_VALUE);
+    return arr.reduce((sum, val) => sum + val, 0);
   }
 
   submitResults(name: string): void {
