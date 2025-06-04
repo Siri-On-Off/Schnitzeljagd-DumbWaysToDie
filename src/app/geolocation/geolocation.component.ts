@@ -15,19 +15,22 @@ import {TaskService} from "../services/task.service";
 export class GeolocationComponent implements OnInit, OnDestroy {
   @Output() gpsSuccessEvent = new EventEmitter<void>();
 
+  protected readonly TASK_NUMBER: number = 2;
+  protected readonly TARGET_RADIUS_METERS: number = 15;
+
   ictCenterCoords = { latitude: 47.027171453084655, longitude: 8.300770702636505 };
   migrosKriensCoords = { latitude: 47.02758723687247, longitude: 8.300906172755733 };
+  oltenCoords = { latitude: 47.34731167349346, longitude: 7.896368760127108};
   targetCoords = this.ictCenterCoords;
   distanceToTarget: WritableSignal<number | undefined> = signal(undefined);
   taskCompleted = false;
 
   watchId: string | null = null;
-  readonly taskNumber = 1;
 
   constructor(protected taskService: TaskService) {}
 
   async ngOnInit() {
-    this.taskService.start(this.taskNumber);
+    this.taskService.start(this.TASK_NUMBER);
     await this.startWatchingPosition();
   }
 
@@ -65,12 +68,12 @@ export class GeolocationComponent implements OnInit, OnDestroy {
     if (currentCoords) {
       this.distanceToTarget.set(haversineDistance(currentCoords, this.targetCoords));
 
-      if (!this.taskCompleted && this.distanceToTarget()! <= 15) {
+      if (!this.taskCompleted && this.distanceToTarget()! <= this.TARGET_RADIUS_METERS) {
         this.taskCompleted = true;
         this.gpsSuccessEvent.emit();
 
-        this.taskService.stop(this.taskNumber, true);
-        console.log(this.taskService.printTaskInfo(this.taskNumber));
+        this.taskService.stop(this.TASK_NUMBER, true);
+        console.log(this.taskService.printTaskInfo(this.TASK_NUMBER));
       }
     }
   }
