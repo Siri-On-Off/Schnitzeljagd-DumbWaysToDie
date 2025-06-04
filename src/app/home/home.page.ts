@@ -3,7 +3,6 @@ import { GameService } from '../services/game.service';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
 import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
-import {ScannerComponent} from "../scanner/scanner.component";
 
 @Component({
   selector: 'app-home',
@@ -61,17 +60,17 @@ export class HomePage {
 
     if (!this.playerName) return;
 
-    const camGranted = await this.permissionService.checkCameraPermission();
-    if (!camGranted) {
-      await this.showError('Kamera-Zugriff verweigert.');
-      return;
-    }
-
-    const locGranted = await this.permissionService.checkLocationPermission();
-    if (!locGranted) {
-      await this.showError('Standort-Zugriff verweigert.');
-      return;
-    }
+    // const camGranted = await this.permissionService.checkCameraPermission();
+    // if (!camGranted) {
+    //   await this.showError('Kamera-Zugriff verweigert.');
+    //   return;
+    // }
+    //
+    // const locGranted = await this.permissionService.checkLocationPermission();
+    // if (!locGranted) {
+    //   await this.showError('Standort-Zugriff verweigert.');
+    //   return;
+    // }
 
     this.gameService.setPlayer(this.playerName);
     await this.router.navigateByUrl('/tasks/qr');

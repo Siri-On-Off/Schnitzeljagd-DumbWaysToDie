@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Aufgabe 1: QR-Code</ion-title>
+    <ion-title>Aufgabe 2: GPS</ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="skipTask()">
         <ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
@@ -11,9 +11,9 @@
 
 <ion-content class="ion-padding">
   <div class="task-wrapper">
-    <h2 class="task-title">Finde und scanne den QR-Code<br/>an Station 1</h2>
+    <h2 class="task-title">Begib dich vor die Migros am Mattenhof in Kriens.</h2>
 
-    <app-scanner/>
+    <app-geolocation/>
 
     <div class="button-row">
       <ion-button color="medium" (click)="cancelGame()" class="cancel-button">
@@ -23,7 +23,6 @@
     <ion-button
       color="primary"
       (click)="goToNextTask()"
-      *ngIf="scanSuccessful"
       class="next-button"
     >
       ▶️ Weiter
