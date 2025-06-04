@@ -1,6 +1,17 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
+import {TaskService} from "../services/task.service";
+import {
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader, IonItem,
+  IonLabel,
+  IonText,
+  IonTitle,
+  IonToolbar
+} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-distance',
@@ -8,24 +19,36 @@ import {DecimalPipe} from "@angular/common";
   templateUrl: './distance.component.html',
   styleUrls: ['./distance.component.scss'],
   imports: [
-    DecimalPipe
+    DecimalPipe,
+    IonCard,
+    IonCardContent,
+    IonText,
+    IonLabel,
+    IonContent,
+    IonTitle,
+    IonToolbar,
+    IonHeader,
+    IonItem
   ]
 })
 export class DistanceComponent  implements OnInit, OnDestroy {
   @Output() distanceSuccessEvent = new EventEmitter<void>();
 
-  distanceGoalInMeters = 20;
+  protected readonly DISTANCE_GOAL_IN_METERS: number = 20;
+  protected readonly TASK_NUMBER: number = 2;
+
   totalDistanceTravelled: WritableSignal<number> = signal(0);
+
   previousCoords: { latitude: number; longitude: number } | null = null;
   taskCompleted = false;
 
   watchId: string | null = null;
-  startTime: number | null = null;
-  endTime: number | null = null;
-  diffSeconds: number | null = null;
+
+  constructor(protected taskService: TaskService) {}
+
 
   async ngOnInit() {
-    this.startTime = new Date().getTime();
+    this.taskService.start(this.TASK_NUMBER);
     await this.startWatchingPosition();
   }
 
@@ -66,16 +89,12 @@ export class DistanceComponent  implements OnInit, OnDestroy {
 
       console.log(`+${distance.toFixed(2)}m, gesamt: ${updatedTotal.toFixed(2)}m`);
 
-      if (!this.taskCompleted && updatedTotal >= this.distanceGoalInMeters) {
+      if (!this.taskCompleted && updatedTotal >= this.DISTANCE_GOAL_IN_METERS) {
         this.taskCompleted = true;
-        this.endTime = new Date().getTime();
         this.distanceSuccessEvent.emit();
 
-        if (this.startTime && this.endTime) {
-          const diffMilliseconds = this.endTime - this.startTime;
-          this.diffSeconds = Math.round(diffMilliseconds / 1000);
-          console.log(`Ziel erreicht in ${this.diffSeconds} Sekunden!`);
-        }
+        this.taskService.stop(this.TASK_NUMBER, true);
+        console.log(this.taskService.printTaskInfo(this.TASK_NUMBER));
       }
     }
 
