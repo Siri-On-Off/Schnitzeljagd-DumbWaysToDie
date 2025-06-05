@@ -17,7 +17,6 @@
 }
 
 @if (taskCompleted) {
-  <div class="task-successfull">
   <ion-text color="success">
     <h3>
       🎉 Aufgabe gelöst!
@@ -26,5 +25,4 @@
   <p>
     {{ taskService.printTaskInfo(TASK_NUMBER) }}
   </p>
-  </div>
 }
