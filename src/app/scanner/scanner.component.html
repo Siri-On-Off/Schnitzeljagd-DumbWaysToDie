@@ -1,32 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>QR Code Scanner</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
-  <ion-button expand="full" (click)="scanQRCode()" [disabled]="!hasCamera">
+@if (!taskCompleted) {
+  <ion-button class="fixed-scan-button" (click)="scanQRCode()" [disabled]="!hasCamera">
     Scan QR Code
   </ion-button>
 
   @if (resultText) {
-    <ion-text>
+    <ion-text color="danger">
       <p>{{ resultText }}</p>
     </ion-text>
   }
+}
 
-  @if (!hasCamera && platform.is('android')) {
-    <ion-text>
-      <p>Camera is not available or permissions denied. Please enable camera access in your device settings.</p>
-    </ion-text>
-  }
+@if (!hasCamera && platform.is('android')) {
+  <ion-text>
+    <p>Camera is not available or permissions denied. Please enable camera access in your device settings.</p>
+  </ion-text>
+}
 
-  @if (taskCompleted) {
-    <p>
-      Task was successfull
-    </p>
-    <p>
-      {{ taskService.printTaskInfo(TASK_NUMBER) }}
-    </p>
-  }
-</ion-content>
+@if (taskCompleted) {
+  <div class="task-successfull">
+  <ion-text color="success">
+    <h3>
+      🎉 Aufgabe gelöst!
+    </h3>
+  </ion-text>
+  <p>
+    {{ taskService.printTaskInfo(TASK_NUMBER) }}
+  </p>
+  </div>
+}

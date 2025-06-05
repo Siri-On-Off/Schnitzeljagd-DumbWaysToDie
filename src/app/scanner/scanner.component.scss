@@ -1,0 +1,11 @@
+.fixed-scan-button {
+  width: 320px;
+  height: 50px;
+  font-size: 1rem;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
+  display: block;
+}

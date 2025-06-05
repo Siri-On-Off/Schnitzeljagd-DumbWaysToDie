@@ -2,11 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { TaskService } from '../services/task.service';
 import {
   IonButton,
-  IonContent,
-  IonHeader,
   IonText,
-  IonTitle,
-  IonToolbar,
   Platform
 } from "@ionic/angular/standalone";
 import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
@@ -17,10 +13,6 @@ import {BarcodeScanner} from "@capacitor-mlkit/barcode-scanning";
   templateUrl: './scanner.component.html',
   styleUrls: ['./scanner.component.scss'],
   imports: [
-    IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonButton,
     IonText
   ]
@@ -78,13 +70,13 @@ export class ScannerComponent implements OnInit {
         console.log('Scanned QR code:', scannedValue);
 
         if (scannedValue === this.expectedQrCodeValue) {
-          this.resultText = `QR-Code erfolgreich gescannt: ${scannedValue}. Aufgabe gelöst!`;
+          this.resultText = '';
           this.taskCompleted = true;
           this.scanSuccess.emit();
           this.taskService.stop(this.TASK_NUMBER, true);
           console.log(this.taskService.printTaskInfo(this.TASK_NUMBER));
         } else {
-          this.resultText = `QR-Code gescannt: ${scannedValue}. Das ist nicht der erwartete Code (${this.expectedQrCodeValue}).`;
+          this.resultText = 'Das ist nicht der erwartete Code.';
         }
       } else {
         this.resultText = 'Kein QR-Code erkannt.';

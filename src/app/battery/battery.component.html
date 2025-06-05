@@ -1,22 +1,18 @@
 <!-- Ladezustand -->
-<ion-card>
-  <ion-card-content>
-    <ion-text color="{{ isCharging ? 'primary' : 'medium' }}">
-      <h3>
-        <ion-icon name="{{ isCharging ? 'battery-charging-outline' : 'battery-dead-outline' }}"></ion-icon>
-        {{ isCharging ? 'Ladevorgang läuft…' : 'Nicht am Laden' }}
-      </h3>
-    </ion-text>
-  </ion-card-content>
-</ion-card>
+<ion-text color="{{ isCharging ? 'primary' : 'medium' }}">
+  <h4>
+    <ion-icon name="{{ isCharging ? 'battery-charging-outline' : 'battery-dead-outline' }}"></ion-icon>
+    {{ isCharging ? 'Ladevorgang läuft…' : 'Nicht am Laden' }}
+  </h4>
+</ion-text>
 
 @if (taskCompleted) {
-  <ion-card>
-    <ion-card-content>
-      <ion-text color="success">
-        <h3>🎉 Aufgabe abgeschlossen!</h3>
-      </ion-text>
-      <p>{{ taskService.printTaskInfo(TASK_NUMBER) }}</p>
-    </ion-card-content>
-  </ion-card>
+  <ion-text color="success">
+    <h3>
+      🎉 Aufgabe gelöst!
+    </h3>
+  </ion-text>
+  <p>
+    {{ taskService.printTaskInfo(TASK_NUMBER) }}
+  </p>
 }

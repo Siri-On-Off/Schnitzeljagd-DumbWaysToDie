@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import { Device, BatteryInfo } from '@capacitor/device';
 import {TaskService} from "../services/task.service";
-import {IonCard, IonCardContent, IonIcon, IonText} from "@ionic/angular/standalone";
+import {IonIcon, IonText} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-battery',
@@ -9,8 +9,6 @@ import {IonCard, IonCardContent, IonIcon, IonText} from "@ionic/angular/standalo
   templateUrl: './battery.component.html',
   styleUrls: ['./battery.component.scss'],
   imports: [
-    IonCard,
-    IonCardContent,
     IonText,
     IonIcon
   ]

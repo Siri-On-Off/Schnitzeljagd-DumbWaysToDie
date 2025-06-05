@@ -1,41 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Strecke laufen</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- Angezeigte zurückgelegte Strecke -->
+<ion-item lines="none">
+  <ion-label>
+    <h2>Zurückgelegte Strecke {{ totalDistanceTravelled() | number:'1.0-2' }} Meter</h2>
+  </ion-label>
+</ion-item>
 
-<ion-content class="ion-padding">
-  <!-- Angezeigte zurückgelegte Strecke -->
-  <ion-item lines="none">
-    <ion-label>
-      <h2>Zurückgelegte Strecke</h2>
-      <p>{{ totalDistanceTravelled() | number:'1.0-2' }} Meter</p>
-    </ion-label>
-  </ion-item>
-
-  <!-- Erfolgsmeldung, sobald das Ziel erreicht ist -->
-  @if (taskCompleted) {
-    <ion-card>
-      <ion-card-content>
-        <ion-text color="success">
-          <h3>🎉 Ziel erreicht!</h3>
-        </ion-text>
-        {{ taskService.printTaskInfo(TASK_NUMBER) }}
-      </ion-card-content>
-    </ion-card>
-  }
+<!-- Erfolgsmeldung, sobald das Ziel erreicht ist -->
+@if (taskCompleted) {
+   <ion-text color="success">
+     <h3>
+        🎉 Ziel erreicht!
+     </h3>
+   </ion-text>
+  <p>
+    {{ taskService.printTaskInfo(TASK_NUMBER) }}
+  </p>
+}
 
 
-  <!-- Verbleibende Strecke, solange das Ziel noch nicht erreicht ist -->
-  @if (!taskCompleted) {
-    <ion-card>
-      <ion-card-content>
-        <ion-text>
-          <h3>
-            Noch {{ (DISTANCE_GOAL_IN_METERS - totalDistanceTravelled()) | number:'1.0-2' }} Meter zu gehen…
-          </h3>
-        </ion-text>
-      </ion-card-content>
-    </ion-card>
-  }
-</ion-content>
+<!-- Verbleibende Strecke, solange das Ziel noch nicht erreicht ist -->
+@if (!taskCompleted) {
+    <ion-card-content>
+      <ion-text>
+        <h2>
+          Noch {{ (DISTANCE_GOAL_IN_METERS - totalDistanceTravelled()) | number:'1.0-2' }} Meter zu gehen…
+        </h2>
+      </ion-text>
+    </ion-card-content>
+}

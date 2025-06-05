@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output, signal, WritableSign
 import {Geolocation} from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
 import {TaskService} from "../services/task.service";
+import {IonText} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-geolocation',
@@ -9,7 +10,8 @@ import {TaskService} from "../services/task.service";
   templateUrl: './geolocation.component.html',
   styleUrls: ['./geolocation.component.scss'],
   imports: [
-    DecimalPipe
+    DecimalPipe,
+    IonText
   ]
 })
 export class GeolocationComponent implements OnInit, OnDestroy {

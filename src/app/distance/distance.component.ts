@@ -3,14 +3,10 @@ import { Geolocation } from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
 import {TaskService} from "../services/task.service";
 import {
-  IonCard,
   IonCardContent,
-  IonContent,
-  IonHeader, IonItem,
+  IonItem,
   IonLabel,
   IonText,
-  IonTitle,
-  IonToolbar
 } from "@ionic/angular/standalone";
 
 @Component({
@@ -20,14 +16,9 @@ import {
   styleUrls: ['./distance.component.scss'],
   imports: [
     DecimalPipe,
-    IonCard,
     IonCardContent,
     IonText,
     IonLabel,
-    IonContent,
-    IonTitle,
-    IonToolbar,
-    IonHeader,
     IonItem
   ]
 })
