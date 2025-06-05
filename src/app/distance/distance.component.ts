@@ -3,9 +3,6 @@ import { Geolocation } from '@capacitor/geolocation';
 import {DecimalPipe} from "@angular/common";
 import {TaskService} from "../services/task.service";
 import {
-  IonCardContent,
-  IonItem,
-  IonLabel,
   IonText,
 } from "@ionic/angular/standalone";
 
@@ -16,10 +13,7 @@ import {
   styleUrls: ['./distance.component.scss'],
   imports: [
     DecimalPipe,
-    IonCardContent,
     IonText,
-    IonLabel,
-    IonItem
   ]
 })
 export class DistanceComponent  implements OnInit, OnDestroy {
