@@ -49,3 +49,12 @@
   --padding-end: 16px;
   font-size: 1rem;
 }
+
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}

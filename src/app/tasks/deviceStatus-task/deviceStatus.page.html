@@ -17,7 +17,9 @@
       Schliesse dein Gerät ans Stromnetz an, um die Aufgabe zu erfüllen.
     </h2>
 
-      <app-battery (deviceStatusEvent)="onDeviceReady()"></app-battery>
+    <div class="status-container">
+    <app-battery (deviceStatusEvent)="onDeviceReady()"></app-battery>
+    </div>
 
     <div class="button-row">
       <ion-button color="medium" (click)="cancelGame()" class="cancel-button">
