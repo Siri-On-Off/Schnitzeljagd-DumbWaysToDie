@@ -15,7 +15,9 @@
   <div class="task-wrapper">
     <h2 class="task-title">Begib dich vor die Migros am Mattenhof in Kriens.</h2>
 
+    <div class="gps-container">
     <app-geolocation (gpsSuccessEvent)="onGpsTaskCompleted()"></app-geolocation>
+    </div>
 
     <div class="button-row">
       <ion-button color="medium" (click)="cancelGame()" class="cancel-button">

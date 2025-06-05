@@ -1,5 +1,9 @@
-@if (distanceToTarget()) {
-  <p>Entfernung: {{ distanceToTarget() | number:'1.0-2' }} Meter</p>
+@if (!taskCompleted) {
+    @if (distanceToTarget()) {
+      <h4 style="color: grey">
+        Entfernung: {{ distanceToTarget() | number:'1.0-2' }} Meter
+      </h4>
+  }
 }
 
 @if (taskCompleted) {
