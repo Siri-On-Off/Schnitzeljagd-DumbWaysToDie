@@ -1,8 +1,17 @@
 import { Component } from '@angular/core';
 import { PermissionService } from '../services/permission.service';
 import { Router } from '@angular/router';
-import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import {
+  AlertController,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar
+} from "@ionic/angular/standalone";
 import { TaskService } from '../services/task.service';
+import {App} from "@capacitor/app";
 
 
 @Component({
@@ -16,6 +25,7 @@ import { TaskService } from '../services/task.service';
     IonTitle,
     IonContent,
     IonButton,
+    IonButtons,
   ],
 })
 export class HomePage {
@@ -84,5 +94,9 @@ export class HomePage {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  exitApp() {
+    App.exitApp();
   }
 }
