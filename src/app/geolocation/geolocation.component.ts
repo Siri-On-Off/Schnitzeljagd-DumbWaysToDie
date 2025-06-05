@@ -23,7 +23,7 @@ export class GeolocationComponent implements OnInit, OnDestroy {
   ictCenterCoords = { latitude: 47.027171453084655, longitude: 8.300770702636505 };
   migrosKriensCoords = { latitude: 47.02758723687247, longitude: 8.300906172755733 };
   oltenCoords = { latitude: 47.34731167349346, longitude: 7.896368760127108};
-  targetCoords = this.ictCenterCoords;
+  targetCoords = this.migrosKriensCoords;
   distanceToTarget: WritableSignal<number | undefined> = signal(undefined);
   taskCompleted = false;
 
