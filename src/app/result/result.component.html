@@ -5,10 +5,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p>Schnitzel: {{ schnitzel }}</p>
-  <p>Kartoffel: {{ potatoes }}</p>
-  <p>Gesamtzeit: {{ totalTime }}</p>
-
+  <h2 class="task-title">
+    Die Jagd ist vorbei! Deine Ausbeute:
+  </h2>
+  <div class="summary">
+    <p class="summary-item">🥩: {{ schnitzel }}</p>
+    <p class="summary-item">🥔: {{ potatoes }}</p>
+    <p class="summary-item">Gesamtzeit: {{ totalTime }}</p>
+  </div>
 
   <ion-button expand="block" (click)="submit()">Weiter</ion-button>
 </ion-content>

@@ -86,20 +86,32 @@ export class LeaderboardPage implements OnInit {
           text: 'Starten',
           handler: (data) => {
             const name = data.playerName?.trim();
-            if (name) {
-              this.taskService.reset();
-              this.taskService.setPlayerName(name);
-              this.router.navigateByUrl('/tasks/qr');
-
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigateByUrl('/tasks/qr');
-              });
+            if (!name) {
+              this.showError('Bitte gib einen Namen ein.');
+              return false;
             }
+
+            this.taskService.setPlayerName(name);
+            this.taskService.reset();
+
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigateByUrl('/tasks/qr');
+            });
+
+            return true;
           }
         }
       ]
     });
 
+    await alert.present();
+  }
+  private async showError(msg: string) {
+    const alert = await this.alertController.create({
+      header: 'Fehler',
+      message: msg,
+      buttons: ['OK'],
+    });
     await alert.present();
   }
 }
